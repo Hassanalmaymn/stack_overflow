@@ -8,11 +8,14 @@ dbcon();
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>stack overflow</title>
+        <link rel="stylesheet" href="styles/bootstrap.min.css">    
     </head>
     <body>
+        
         <?php
         // put your code here
         ?>
+        <script  src="scripts/bootstrap.bundle.min.js"></script>
     </body>
 </html>
