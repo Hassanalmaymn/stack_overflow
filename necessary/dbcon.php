@@ -1,9 +1,9 @@
 <?php
-
-
-$con=mysqli_connect('localhost', 'root', '' ,'stack_overflow' ,3306);
-if (mysqli_errno($con)){
-    die('error');
+include 'dbinformation.php';
+function dbcon(){
+    $con=mysqli_connect(dbhost, dbusername, dbpwd ,dbname ,dbport);
+    if (mysqli_errno($con)){
+        die('error');
+    }
+    return $con;
 }
-
-
