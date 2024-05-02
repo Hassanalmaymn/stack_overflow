@@ -1,6 +1,7 @@
 <?php
 include 'necessary/dbcon.php';
 dbcon();
+header('location: Signin.php')
 
 
 ?>

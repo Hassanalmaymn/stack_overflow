@@ -1,12 +1,12 @@
 <?php
 
-require_once 'dbcon.php'; // Assuming your database connection function is in dbcon.php
+require_once 'necessary/dbcon.php'; // Assuming your database connection function is in dbcon.php
 
 function register($name, $email, $password)
 {
-    $db = connectDB();
+    $db = dbcon();
     $hashed_password = md5($password); // Note: MD5 hashing is not secure, consider using stronger hashing algorithms like bcrypt or Argon2
-    $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$hashed_password')";
+    $sql = "INSERT INTO stack_user (name, email, password) VALUES ('$name', '$email', '$hashed_password')";
     if (mysqli_query($db, $sql)) {
         $user_id = mysqli_insert_id($db);
         setcookie('user_id', $user_id, time() + (86400 * 30), "/"); // Set cookie for user ID
@@ -18,9 +18,9 @@ function register($name, $email, $password)
 
 function login($email, $password)
 {
-    $db = connectDB();
+    $db = dbcon();
     $hashed_password = md5($password); // Note: MD5 hashing is not secure, consider using stronger hashing algorithms like bcrypt or Argon2
-    $sql = "SELECT id FROM users WHERE email = '$email' AND password = '$hashed_password'";
+    $sql = "SELECT id FROM stack_user WHERE email = '$email' AND password = '$hashed_password'";
     $result = mysqli_query($db, $sql);
     if ($result && mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
