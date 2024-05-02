@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="input-group">
                 <i class="fas fa-user"></i>
                 <input type="text" name="name" id="name" placeholder="Name" required>
-                <label for="name">Name</label>
+                <label for="name">Username</label>
             </div>
             <div class="input-group">
                 <i class="fas fa-envelope"></i>
