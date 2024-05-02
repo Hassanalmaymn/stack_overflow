@@ -1,19 +1,17 @@
 <?php
-// Include database connection and user authentication functions
-require_once 'dbcon.php';
-require_once 'user.php';
+require_once 'User.php'; // Include the file containing user functions
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
-    if (login($email, $password)) {
-        // Redirect to dashboard or home page upon successful login
-        header("Location: dashboard.php");
+    if (loginWithUsername($username, $password)) { // Call the login function from User.php
+        // Redirect or display success message
+        header("Location: index.php");
         exit();
     } else {
-        // Display error message if login fails
-        $error_message = "Invalid email or password.";
+        // Display error message
+        $error_message = "Invalid username or password.";
     }
 }
 ?>
@@ -25,33 +23,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styleee.css">
+    <link rel="stylesheet" href="styleSign.css">
 </head>
 <body>
     <div class="container" id="signIn">
         <h1 class="form-title">Sign In</h1>
+        <?php if (isset($error_message)) echo '<div class="error-message">' . $error_message . '</div>'; ?>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email" name="email" id="email" placeholder="Email" required>
-                <label for="email">Email</label>
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" name="password" id="password" placeholder="Password" required>
-                <label for="password">Password</label>
-            </div>
-            <input type="submit" class="btn" value="Sign In" name="signIn">
-            <?php if (isset($error_message)) { ?>
-                <p class="error"><?php echo $error_message; ?></p>
-            <?php } ?>
+          <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input type="text" name="username" id="username" placeholder="Username" required>
+              <label for="username">Username</label>
+          </div>
+          <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" name="password" id="password" placeholder="Password" required>
+              <label for="password">Password</label>
+          </div>
+         <input type="submit" class="btn" value="Sign In" name="signIn">
         </form>
         <br>
         <div class="links">
-            <p>Don't have an account yet?</p>
-            <a href="signup.php">Sign Up</a>
+          <p>Don't have an account yet?</p>
+          <button onclick="window.location.href = 'Signup.php';">Sign Up</button>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
