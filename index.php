@@ -1,7 +1,6 @@
 <?php
 include 'necessary/dbcon.php';
-dbcon();
-header('location: Signin.php')
+
 
 
 ?>
@@ -10,13 +9,13 @@ header('location: Signin.php')
     <head>
         <meta charset="UTF-8">
         <title>stack overflow</title>
+        <link rel="icon" href="icon.png">
         <link rel="stylesheet" href="styles/bootstrap.min.css">    
     </head>
     <body>
+        <?php require_once 'necessary/stack_navbar.php'; ?>
         
-        <?php
-        // put your code here
-        ?>
+        
         <script  src="scripts/bootstrap.bundle.min.js"></script>
     </body>
 </html>
