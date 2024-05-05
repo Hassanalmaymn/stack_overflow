@@ -31,8 +31,10 @@
         require_once'User.php';
 
         if (!isLoggedIn()) {
-            echo'<a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signin.php">sign in</a>' .
-            '<a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signup.php">sign up</a>';
+            echo'<a class="btn btn-outline-dark justify-content-end m-2" href="display10most.php">display questions has most answers</a>
+                <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signin.php">sign in</a>
+            <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signup.php">sign up</a>';
+                   
         }
         if (isLoggedIn()) {
             $home = $active === 'home' ? 'active' : '';
@@ -50,8 +52,9 @@
                         <a class="btn btn-outline-dark m-2" href="useranswers.php">My Answers</a>
                     </li>
         </ul>
-        <a class="btn btn-outline-dark justify-content-end m-2" href="signout.php">sign out</a>
-           <a class="btn btn-outline-dark justify-content-end m-2" href="display10most.php">display questions has most answers</a>'; 
+        
+        
+                    <a class="btn btn-outline-dark justify-content-end m-2" href="signout.php">sign out</a>'; 
         }
         ?>
     </div>
