@@ -19,7 +19,7 @@ USE `stack_overflow`;
 
 -- Dumping structure for table stack_overflow.answer
 CREATE TABLE IF NOT EXISTS `answer` (
-  `id` char(6) NOT NULL,
+  `id` char(6) NOT NULL DEFAULT floor(1000000 * rand()),
   `userid` char(4) DEFAULT NULL,
   `questionid` char(5) DEFAULT NULL,
   `title` varchar(60) DEFAULT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
 
 -- Dumping structure for table stack_overflow.comment_answer
 CREATE TABLE IF NOT EXISTS `comment_answer` (
-  `id` char(8) NOT NULL,
+  `id` char(8) NOT NULL DEFAULT floor(100000000 * rand()),
   `userid` char(4) DEFAULT NULL,
   `questionid` char(5) DEFAULT NULL,
   `answerid` char(6) DEFAULT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `comment_answer` (
 
 -- Dumping structure for table stack_overflow.question
 CREATE TABLE IF NOT EXISTS `question` (
-  `id` char(5) NOT NULL,
+  `id` char(5) NOT NULL DEFAULT floor(100000 * rand()),
   `userid` char(3) DEFAULT NULL,
   `title` varchar(60) DEFAULT NULL,
   `content` varchar(1000) DEFAULT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `question` (
 
 -- Dumping structure for table stack_overflow.rate
 CREATE TABLE IF NOT EXISTS `rate` (
-  `id` char(7) NOT NULL,
+  `id` char(7) NOT NULL DEFAULT floor(10000000 * rand()),
   `userid` char(4) DEFAULT NULL,
   `questionid` char(5) DEFAULT NULL,
   `answerid` char(6) DEFAULT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `rate` (
 
 -- Dumping structure for table stack_overflow.stack_user
 CREATE TABLE IF NOT EXISTS `stack_user` (
-  `id` char(4) NOT NULL,
+  `id` char(4) NOT NULL DEFAULT floor(1000 * rand()),
   `name` varchar(50) DEFAULT NULL,
   `email` varchar(256) DEFAULT NULL,
   `PASSWORD` varchar(1000) DEFAULT NULL,

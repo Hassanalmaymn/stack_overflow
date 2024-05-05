@@ -14,6 +14,8 @@ include 'necessary/dbcon.php';
     </head>
     <body>
         <?php require_once 'necessary/stack_navbar.php'; ?>
+        <hr>
+      
         
         
         <script  src="scripts/bootstrap.bundle.min.js"></script>
