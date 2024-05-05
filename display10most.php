@@ -25,7 +25,7 @@ $active='home';
             require_once 'User.php';
             require_once 'necessary/operation.php';
 
-            foreach (get10recentquestion() as $question) {
+            foreach (get10questionwithmostanswers() as $question) {
 
 
                 echo '<div class="card bg-light-emphasis"><a class="card-title" style="text-decoration:none; '
