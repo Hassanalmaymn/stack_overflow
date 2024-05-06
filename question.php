@@ -1,16 +1,20 @@
+<?php session_start();?>
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to edit this template
--->
+
 <html>
-    <head>
+  <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>stack overflow</title>
+        <link rel="icon" href="icon.png">
+        <link rel="stylesheet" href="styles/bootstrap.min.css">    
     </head>
     <body>
-        <?php
-        // put your code here
+        <?php require_once 'necessary/stack_navbar.php';
+                require_once 'necessary/operation.php';
+        foreach (getthequestion($_GET['id']) as $question){
+            echo '<div style="left:50ps"><h3 class="">'.$question['title'].'</h3><p>'.$question['content'].'</p></div>';
+        }
         ?>
     </body>
 </html>

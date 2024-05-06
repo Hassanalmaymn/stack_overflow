@@ -9,7 +9,9 @@ function go($page) {
 function get10recentquestion() {
     $db = dbcon();
 
-    $sql = "SELECT * FROM question ORDER BY question.time DESC LIMIT 10 ;";
+    $sql = "SELECT title,content,time,stack_user.id AS uid ,"
+            . "name, question.id AS qid FROM question,stack_user where"
+            . " stack_user.id=question.userid ORDER BY question.time DESC LIMIT 10 ;";
     $result = mysqli_query($db, $sql);
 
         $assocq=array();
@@ -23,13 +25,14 @@ function get10recentquestion() {
 function get10questionwithmostanswers() {
     $db = dbcon();
 
-    $sql = "SELECT question.id,question.title,question.content,question.time,COUNT(answer.id) "
-            . "AS numberofanswers FROM (question LEFT JOIN answer ON question.id=answer.questionid)"
-            . " GROUP BY question.id ORDER BY COUNT(answer.id) DESC LIMIT 10 ;  ";
+    $sql = "SELECT stack_user.name,question.userid,question.id,question.title,question.content,question.time,COUNT(answer.id)
+       AS numberofanswers FROM ((question LEFT JOIN answer ON question.id=answer.questionid) JOIN stack_user ON stack_user.id=question.userid) 
+            GROUP BY question.id ORDER BY COUNT(answer.id) DESC LIMIT 10 ;  ";
     
     $result = mysqli_query($db, $sql);
   $assocq=array();
     while ($row = mysqli_fetch_array($result)) {
+        
         $assocq[] = $row;
     }
     return $assocq;
@@ -58,6 +61,22 @@ function search($search) {
 
     $sql = "SELECT title,content FROM stack_user,question,answer WHERE stack_user.id=answer.userid AND question.id=answer.questionid AND question.title LIKE '" . $search . "%' OR question.content LIKE '" . $search . "%';";
     $result = mysqli_query($db, $sql);
+    
 
     return $result;
 }
+function getthequestion($question_id) {
+    $db = dbcon();
+
+    $sql = "SELECT stack_user.name,question.userid,question.id,question.title,"
+            . "question.content,question.time FROM stack_user,question WHERE stack_user.id=question.userid AND question.id='".$question_id."';  ";
+    
+    $result = mysqli_query($db, $sql);
+  $assocq=array();
+    while ($row = mysqli_fetch_array($result)) {
+        
+        $assocq[] = $row;
+    }
+    return $assocq;
+}
+

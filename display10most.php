@@ -29,9 +29,10 @@ $active='home';
 
 
                 echo '<div class="card bg-light-emphasis"><a class="card-title" style="text-decoration:none; '
-                . '" href="question.php"><h4 style="background-color:gray;">' . $question['title'] . '</h4></a>'
-                        . '<p class="card-body">' . $question['content'] . '</p><div class="card-footer">' . $question['time'].'<span class="card-footer justify-text-end">'. 
-                        $question['numberofanswers'].'</span></div></div><hr>';
+                . '" href="question.php?id='.$question['id'].'"><h4 style="background-color:gray;">' . $question['title'] . '</h4></a>'
+                        . '<p class="card-body">' . $question['content'] . '</p><div class="card-footer">' . $question['time'].'<span '
+                        . 'class="card-footer justify-text-end" style="align-text:end;">number of answers: '. 
+                        $question['numberofanswers'].'</span><span class="card-footer justify-item-end bg-warning">Posted by : '.$question['name'].'</span></div></div><hr>';
             }
             ?>
 
