@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container" id="signup">
-    <img src="SignLogo.jpg" alt="Logo" width="250" height="70" style="margin-left: 80px;">
+    <a href="index.php"><img src="SignLogo.jpg" alt="Logo" width="250" height="70" style="margin-left: 80px;"></a>
 
         <h1 class="form-title">Sign Up</h1>
         <!-- Error message block -->

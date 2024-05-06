@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container" id="signIn">
-    <img src="SignLogo.jpg" alt="Logo" width="250" height="70" style="margin-left: 80px;">
+        <a href="index.php"><img src="SignLogo.jpg" alt="Logo" width="250" height="70" style="margin-left: 80px;"></a>
 
         <h1 class="form-title">Sign In</h1>
         <?php if (isset($error_message)){ echo "<div class='alert alert-danger d-flex gap-2'><i class='bi bi-info-circle-fill'></i><p class='m-0'>". $error_message . '</p></div>';} ?>
