@@ -17,7 +17,7 @@
 
 
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <form class="d-flex justify-content-center" method="GET" action="index.php" role="search">
+                <form class="d-flex justify-content-center" method="GET" action="search.php" role="search">
                     <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-primary"  type="submit">Search</button>
                 </form>

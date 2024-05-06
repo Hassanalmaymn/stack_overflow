@@ -1,5 +1,6 @@
-<?php session_start();?>
-
+<?php session_start();
+$active='home';
+?>
 <!DOCTYPE html>
 
 <html>
