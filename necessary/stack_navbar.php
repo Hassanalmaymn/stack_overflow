@@ -22,7 +22,7 @@
                     <button class="btn btn-outline-primary"  type="submit">Search</button>
                 </form>
             </ul>
-           
+
 
 
 
@@ -34,7 +34,6 @@
             echo'<a class="btn btn-outline-dark justify-content-end m-2" href="display10most.php">display questions has most answers</a>
                 <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signin.php">sign in</a>
             <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signup.php">sign up</a>';
-                   
         }
         if (isLoggedIn()) {
             $home = $active === 'home' ? 'active' : '';
@@ -54,11 +53,11 @@
         </ul>
         
         
-                    <a class="btn btn-outline-dark justify-content-end m-2" href="signout.php">sign out</a>'; 
+                    <a class="btn btn-outline-dark justify-content-end m-2" href="signout.php">sign out</a>';
         }
         ?>
     </div>
-    
-   
+
+
 
 </nav>

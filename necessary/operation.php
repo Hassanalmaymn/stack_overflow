@@ -24,7 +24,7 @@ function get10recentquestion() {
 function get10questionwithmostanswers() {
     $db = dbcon();
 
-    $sql = "SELECT stack_user.name,question.userid,question.id,question.title,question.content,question.time,COUNT(answer.id)
+    $sql = "SELECT stack_user.name,question.userid,question.id AS qid,question.title,question.content,question.time,COUNT(answer.id)
        AS numberofanswers FROM ((question LEFT JOIN answer ON question.id=answer.questionid) JOIN stack_user ON stack_user.id=question.userid) 
             GROUP BY question.id ORDER BY COUNT(answer.id) DESC LIMIT 10 ;  ";
 
@@ -55,14 +55,15 @@ function getuseranswers($userid) {
     return $result;
 }
 
-function search($search) {
+function find($search) {
     $db = dbcon();
 
     $sql = "SELECT question.id AS qid,question.title,question.content,stack_user.name,question.time, COUNT(answer.id)
-       AS numberofanswers "
-            . "FROM ((question LEFT JOIN answer ON question.id=answer.questionid) JOIN stack_user ON stack_user.id=question.userid)" 
-            . "WHERE question.title LIKE '%" . $search . "%' OR question.content LIKE '%" . $search . "%'"
-            . "GROUP BY question.id ORDER BY COUNT(answer.id) DESC  ;";
+ AS numberofanswers FROM ((stack_user join question ON stack_user.id=question.userid) LEFT JOIN answer ON answer.questionid=question.id) 
+ WHERE question.id IN 
+ (SELECT question.id FROM question WHERE question.title LIKE '%" . $search . "%' OR  question.content LIKE '%" . $search . "%') GROUP BY
+  question.id ORDER by numberofanswers DESC ;";
+
     $result = mysqli_query($db, $sql);
     $assocq = array();
     while ($row = mysqli_fetch_array($result)) {
@@ -77,6 +78,52 @@ function getthequestion($question_id) {
 
     $sql = "SELECT stack_user.name,question.userid,question.id,question.title,"
             . "question.content,question.time FROM stack_user,question WHERE stack_user.id=question.userid AND question.id='" . $question_id . "';  ";
+
+    $result = mysqli_query($db, $sql);
+    $assocq = array();
+    while ($row = mysqli_fetch_array($result)) {
+
+        $assocq[] = $row;
+    }
+    return $assocq;
+}
+
+function getthequestionanswers($question_id) {
+    $db = dbcon();
+
+    $sql = "SELECT answer.title,answer.content,answer.time AS answertime,stack_user.name,answer.id "
+            . "FROM question,answer,stack_user WHERE question.id=answer.questionid AND answer.userid=stack_user.id AND question.id=" . $question_id . ";  ";
+
+    $result = mysqli_query($db, $sql);
+    $assocq = array();
+    while ($row = mysqli_fetch_array($result)) {
+
+        $assocq[] = $row;
+    }
+    return $assocq;
+}
+
+function searchuser($search, $userid) {
+    $db = dbcon();
+
+    $sql = "SELECT question.id AS qid,question.title,question.content,stack_user.name,question.time, COUNT(answer.id)
+ AS numberofanswers FROM ((stack_user join question ON stack_user.id=question.userid) LEFT JOIN answer ON answer.questionid=question.id) 
+ WHERE question.id IN (SELECT question.id FROM question WHERE question.title LIKE '%" . $search . "%' OR  question.content LIKE '%" . $search . "%')
+ AND stack_user.id=" . $userid . " GROUP BY
+  question.id ORDER by numberofanswers DESC ;";
+    $result = mysqli_query($db, $sql);
+    $assocq = array();
+    while ($row = mysqli_fetch_array($result)) {
+
+        $assocq[] = $row;
+    }
+    return $assocq;
+}
+function findmyanswer($search,$userid) {
+    $db = dbcon();
+
+    $sql = "SELECT stack_user.name,answer.time,answer.content,answer.title,answer.id FROM answer,stack_user WHERE answer.userid=stack_user.id "
+            . "AND stack_user.id='".$userid."' AND answer.id IN (SELECT answer.id FROM answer WHERE answer.title LIKE '%".$search."%' OR answer.content LIKE '%".$search."%') ;";
 
     $result = mysqli_query($db, $sql);
     $assocq = array();
