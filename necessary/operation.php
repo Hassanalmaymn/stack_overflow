@@ -11,7 +11,7 @@ function get10recentquestion() {
 
     $sql = "SELECT title,content,time,stack_user.id AS uid ,"
             . "name, question.id AS qid FROM question,stack_user where"
-            . " stack_user.id=question.userid ORDER BY question.time DESC LIMIT 10 ;";
+            . " stack_user.id=question.userid ORDER BY question.time DESC  ;";
     $result = mysqli_query($db, $sql);
 
     $assocq = array();
@@ -26,7 +26,7 @@ function get10questionwithmostanswers() {
 
     $sql = "SELECT stack_user.name,question.userid,question.id AS qid,question.title,question.content,question.time,COUNT(answer.id)
        AS numberofanswers FROM ((question LEFT JOIN answer ON question.id=answer.questionid) JOIN stack_user ON stack_user.id=question.userid) 
-            GROUP BY question.id ORDER BY COUNT(answer.id) DESC LIMIT 10 ;  ";
+            GROUP BY question.id ORDER BY COUNT(answer.id) DESC ;  ";
 
     $result = mysqli_query($db, $sql);
     $assocq = array();
@@ -119,11 +119,12 @@ function searchuser($search, $userid) {
     }
     return $assocq;
 }
-function findmyanswer($search,$userid) {
+
+function findmyanswer($search, $userid) {
     $db = dbcon();
 
     $sql = "SELECT stack_user.name,answer.time,answer.content,answer.title,answer.id FROM answer,stack_user WHERE answer.userid=stack_user.id "
-            . "AND stack_user.id='".$userid."' AND answer.id IN (SELECT answer.id FROM answer WHERE answer.title LIKE '%".$search."%' OR answer.content LIKE '%".$search."%') ;";
+            . "AND stack_user.id='" . $userid . "' AND answer.id IN (SELECT answer.id FROM answer WHERE answer.title LIKE '%" . $search . "%' OR answer.content LIKE '%" . $search . "%') ;";
 
     $result = mysqli_query($db, $sql);
     $assocq = array();

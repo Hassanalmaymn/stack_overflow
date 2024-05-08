@@ -15,38 +15,43 @@ $active = 'home';
         <?php
         require_once 'necessary/stack_navbar.php';
         require_once 'necessary/operation.php';
+        ?>
+        <hr>
+        <?php
         foreach (getthequestion($_GET['id']) as $question) {
             echo '<div class="container"><div class = "card text-center">
             <div class = "card-header">
             Question
             </div>
             <div class = "card-body">
-            <h5 class = "card-title">'.$question['title'].'</h5>
-            <p class = "card-text">'.$question['content'].'</p>
+            <h5 class = "card-title">' . $question['title'] . '</h5>
+            <p class = "card-text">' . $question['content'] . '</p>
             
             </div>
             <div class = "card-footer text-body-light"><span>
-            '.$question['time'].'  </span><span style="backgound-color:gray;">  Posted by : '.$question['name'].'</span>
+            ' . $question['time'] . '  </span><span style="backgound-color:gray;">  Posted by : ' . $question['name'] . '</span>
             </div>
-            </div>';
+            </div>
+            </div><hr>'
+            ;
             //close the div
         }
-         foreach (getthequestionanswers($_GET['id']) as $answer){
-             echo '<div class = "card text-center">
+        foreach (getthequestionanswers($_GET['id']) as $answer) {
+            echo '<div class="container"><div class = "card text-center">
             <div class = "card-header">
             Answer
             </div>
             <div class = "card-body">
-            <h5 class = "card-title">'.$answer['title'].'</h5>
-            <p class = "card-text">'.$answer['content'].'</p>
+            <h5 class = "card-title">' . $answer['title'] . '</h5>
+            <p class = "card-text">' . $answer['content'] . '</p>
             
             </div>
             <div class = "card-footer text-body-light"><span>
-            '.$answer['answertime'].'  </span><span style="backgound-color:gray;">  Posted by : '.$answer['name'].'</span>
+            ' . $answer['answertime'] . '  </span><span style="backgound-color:gray;">  Posted by : ' . $answer['name'] . '</span>
             </div>
-            </div></div>';
-         }
-        
+            </div>
+            </div><hr>';
+        }
         ?>
     </body>
 </html>
