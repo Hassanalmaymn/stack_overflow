@@ -1,11 +1,12 @@
 <?php
 
-require_once 'User.php';
+// Include necessary files
+require_once 'User.php'; // Assuming you have the necessary functions in this file
 
-
+// Redirect to sign-in page if user is not logged in
 if (!isLoggedIn()) {
     header("Location: Signin.php");
-    exit(); 
+    exit(); // Stop further execution
 }
 
 require_once 'necessary/dbcon.php';
@@ -18,13 +19,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle form submission
     $title = $_POST['title'];
     $comment = $_POST['comment'];
+    
+    // Get the user ID from the session or cookie
+    $user_id = $_COOKIE['user_id']; // Update this line with actual user ID retrieval
 
     // Establish connection to the database
     $conn = dbcon();
 
     // Prepare and execute SQL statement to insert data into the database
-    $stmt = $conn->prepare("INSERT INTO question (title, content) VALUES (?, ?)");
-    $stmt->bind_param("ss", $title, $comment);
+    $stmt = $conn->prepare("INSERT INTO question (userid, title, content) VALUES (?, ?, ?)");
+    $stmt->bind_param("iss", $user_id, $title, $comment);
 
     // Check if the insertion was successful
     if ($stmt->execute()) {
@@ -40,6 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
