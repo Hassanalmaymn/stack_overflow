@@ -42,7 +42,7 @@ $active = 'home';
             Answer
             </div>
             <div class = "card-body">
-            <h5 class = "card-title">' . $answer['title'] . '</h5>
+            <a style="text-decoration:none;" href="answer.php?id=' . $answer['id'] . '"><h5 class = "card-title">' . $answer['title'] . '</h5></a>
             <p class = "card-text">' . $answer['content'] . '</p>
             
             </div>

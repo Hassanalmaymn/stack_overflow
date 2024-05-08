@@ -195,12 +195,12 @@ $total_questions = getTotalUserQuestions($user_id);
                 </ul>
             </nav>
         </div>
-
+             <script  src="scripts/bootstrap.bundle.min.js"></script>
         <script>
             function confirmDelete() {
                 return confirm("Are you sure you want to delete this question?");
             }
         </script>
-
+        
     </body>
 </html>
