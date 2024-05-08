@@ -146,25 +146,29 @@ $total_questions = getTotalUserQuestions($user_id);
 <div class="container">
     <h2>My Questions</h2>
     
-    <!-- Display user's questions -->
-    <?php foreach ($user_questions as $question): ?>
-        <div class="question-box">
-            <h4><?php echo $question['title']; ?></h4>
-            <p><?php echo $question['content']; ?></p>
-            <p>Created Time: <?php echo $question['time']; ?></p> <!-- Display time for the question -->
-            <!-- Edit and delete buttons -->
-            <div class="btn-group">
-                <form method="post" action="edit_question.php?question_id=<?php echo $question['id']; ?>">
-                    <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
-                    <button type="submit" name="edit_question" class="btn btn-warning">Edit</button> <!-- Changed class to "btn-warning" -->
-                </form>
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return confirmDelete();">
-                    <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
-                    <button type="submit" name="delete_question" class="btn btn-danger">Delete</button>
-                </form>
+    <!-- Display user's questions or message if no questions -->
+    <?php if (empty($user_questions)): ?>
+        <p>You don't have any Question</p>
+    <?php else: ?>
+        <?php foreach ($user_questions as $question): ?>
+            <div class="question-box">
+                <h4><?php echo $question['title']; ?></h4>
+                <p><?php echo $question['content']; ?></p>
+                <p>Created Time: <?php echo $question['time']; ?></p> <!-- Display time for the question -->
+                <!-- Edit and delete buttons -->
+                <div class="btn-group">
+                    <form method="post" action="edit_question.php?question_id=<?php echo $question['id']; ?>">
+                        <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
+                        <button type="submit" name="edit_question" class="btn btn-warning">Edit</button> <!-- Changed class to "btn-warning" -->
+                    </form>
+                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return confirmDelete();">
+                        <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
+                        <button type="submit" name="delete_question" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
     <!-- Pagination -->
     <nav aria-label="Page navigation example">
@@ -199,8 +203,3 @@ function confirmDelete() {
 
 </body>
 </html>
-
-
-
-
-
