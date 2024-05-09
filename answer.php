@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
+$active="answer page";
 require_once 'necessary/dbcon.php';
 
 function getnumofcomments($answerid) {

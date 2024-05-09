@@ -4,6 +4,43 @@ $active = 'home';
 $limit = 10;
 require_once 'necessary/dbcon.php';
 
+// Function to delete a question by its ID
+function deleteQuestion($question_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM question WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $question_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_question'])) {
+    $question_id = $_POST['question_id'];
+    if (deleteQuestion($question_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+
 // Function to get the total number of questions for a user
 function getTotalQuestions() {
     $conn = dbcon();
@@ -40,7 +77,7 @@ function getQuestions($offset, $limit) {
     }
 
     // Prepare SQL query to fetch user's questions with pagination
-    $stmt = $conn->prepare("SELECT question.*,stack_user.name FROM question,stack_user where stack_user.id=question.userid ORDER BY time DESC LIMIT ?, ?");
+    $stmt = $conn->prepare("SELECT question.*,stack_user.name,stack_user.id AS userid FROM question,stack_user where stack_user.id=question.userid ORDER BY time DESC LIMIT ?, ?");
     if (!$stmt) {
         echo "Error: " . $conn->error;
         return array(); // Return an empty array if query preparation fails
@@ -99,7 +136,7 @@ $questions = getQuestions($offset, $limit);
     </head>
     <body>
 
-        <?php require_once 'necessary/stack_navbar.php'; ?>
+<?php require_once 'necessary/stack_navbar.php'; ?>
         <hr>
         <div class="container">
             <?php
@@ -119,16 +156,30 @@ $questions = getQuestions($offset, $limit);
               }
               ?> */
             ?>
-            <?php foreach ($questions as $question): ?>
+<?php foreach ($questions as $question): ?>
                 <div class="question-box">
                     <h4><a style='text-decoration: none;' href='question.php?id=<?php echo $question['id']; ?>'><?php echo $question['title']; ?></a></h4>
                     <p><?php echo $question['content']; ?></p>
                     <p>Created Time: <?php echo $question['time']; ?></p> <!-- Display time for the question -->
                     <p>Posted by: <?php echo $question['name']; ?></p>
                     <!-- Edit and delete buttons -->
+                    <?php
+                    if (isLoggedIn() && $_COOKIE['user_id'] === $question['userid']) {
+                        echo '<div class="btn-group">
+                            <form method="post" action="edit_question.php?question_id=' . $question['id'] . '">
+                    <input type="hidden" name="question_id" value="' . $question['id'] . '">
+                                <button type="submit" name="edit_question" class="btn btn-warning">Edit</button> 
+                            </form>
+                            <form method="post" action="' . $_SERVER['PHP_SELF'] . '" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="question_id" value="' . $question['id'] . '">
+                                <button type="submit" name="delete_question" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>';
+                    }
+                    ?>
 
                 </div>
-            <?php endforeach; //fix pagination bug    ?>
+<?php endforeach; //fix pagination bug      ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <!-- Previous page button -->
@@ -141,7 +192,7 @@ $questions = getQuestions($offset, $limit);
                     <!-- Page numbers -->
                     <?php for ($i = 1; $i <= ceil($total_questions / $limit); $i++): ?>
                         <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-                    <?php endfor; ?>
+<?php endfor; ?>
                     <!-- Next page button -->
                     <li class="page-item <?php echo ($page >= ceil($total_questions / $limit)) ? 'disabled' : ''; ?>">
                         <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
@@ -155,5 +206,10 @@ $questions = getQuestions($offset, $limit);
         </div>
 
         <script  src="scripts/bootstrap.bundle.min.js"></script>
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this question?");
+            }
+        </script>
     </body>
 </html>

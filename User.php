@@ -2,24 +2,23 @@
 
 require_once 'necessary/dbcon.php'; // Assuming your database connection function is in dbcon.php
 
-function register($name, $email, $password)
-{
+function register($name, $email, $password) {
     $db = dbcon();
-    
+
     if (!$db) {
         return "Failed to connect to the database.";
     }
-    
+
     $check_sql = "SELECT COUNT(*) as count FROM stack_user WHERE email = ? OR name = ?";
     $check_stmt = mysqli_prepare($db, $check_sql);
     mysqli_stmt_bind_param($check_stmt, "ss", $email, $name);
     mysqli_stmt_execute($check_stmt);
     $check_result = mysqli_stmt_get_result($check_stmt);
-    
+
     if (!$check_result) {
         return "Error: " . mysqli_error($db);
     }
-    
+
     $row = mysqli_fetch_assoc($check_result);
     if ($row['count'] > 0) {
         return "User already exists";
@@ -29,9 +28,12 @@ function register($name, $email, $password)
     $sql = "INSERT INTO stack_user (name, email, password) VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($db, $sql);
     mysqli_stmt_bind_param($stmt, "sss", $name, $email, $hashed_password);
-    
+
     if (mysqli_stmt_execute($stmt)) {
-        $user_id = mysqli_insert_id($db);
+        $sqls = "select id from stack_user where stack_user.name='" . $name . "';";
+        $result = mysqli_query($db, $sqls);
+        $row = mysqli_fetch_array($result);
+        $user_id = $row['id'];
         setcookie('user_id', $user_id, time() + (86400 * 30), "/");
         return true;
     } else {
@@ -39,15 +41,14 @@ function register($name, $email, $password)
     }
 }
 
-function login($username, $password)
-{
+function login($username, $password) {
     $db = dbcon();
     $sql = "SELECT id, password FROM stack_user WHERE name = ?";
     $stmt = mysqli_prepare($db, $sql);
     mysqli_stmt_bind_param($stmt, "s", $username);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     if ($result && mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
         $hashed_password = $row['password'];
@@ -60,13 +61,11 @@ function login($username, $password)
     return false;
 }
 
-function isLoggedIn()
-{
+function isLoggedIn() {
     return isset($_COOKIE['user_id']);
 }
 
-function logout()
-{
+function logout() {
     setcookie('user_id', '', time() - 3600, '/');
 }
 

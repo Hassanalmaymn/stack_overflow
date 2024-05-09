@@ -158,7 +158,7 @@ $total_questions = getTotalUserQuestions($user_id);
                         <p>Created Time: <?php echo $question['time']; ?></p> <!-- Display time for the question -->
                         <!-- Edit and delete buttons -->
                         <div class="btn-group">
-                            <form method="post" action="edit_question.php?question_id=<?php echo $question['id']; ?>">
+                            <form method="post" action="edit_question.php">
                                 <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>">
                                 <button type="submit" name="edit_question" class="btn btn-warning">Edit</button> <!-- Changed class to "btn-warning" -->
                             </form>
@@ -195,12 +195,12 @@ $total_questions = getTotalUserQuestions($user_id);
                 </ul>
             </nav>
         </div>
-             <script  src="scripts/bootstrap.bundle.min.js"></script>
+        <script  src="scripts/bootstrap.bundle.min.js"></script>
         <script>
-            function confirmDelete() {
-                return confirm("Are you sure you want to delete this question?");
-            }
+                        function confirmDelete() {
+                            return confirm("Are you sure you want to delete this question?");
+                        }
         </script>
-        
+
     </body>
 </html>
