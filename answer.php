@@ -4,6 +4,42 @@ session_start();
 $active = "answer page";
 require_once 'necessary/dbcon.php';
 
+function deleteQuestion($answer_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM answer WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $answer_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_answer'])) {
+    $answer_id = $_POST['answer_id'];
+    if (deleteQuestion($answer_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+
 function getnumofcomments($answerid) {
     $conn = dbcon();
     if (!$conn) {
@@ -135,8 +171,8 @@ $totalcomments = getnumofcomments($_GET['id'])
             
             </div>
             <div class = "card-footer text-body-light"><span>
-            ' . $answer['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $answer['name'] . '</span>
-            </div>';
+            ' . $answer['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $answer['name'] . '</span><br>
+            ';
 
             //close the div
         } if (isset($_COOKIE['user_id']) && $answer['userid'] === $_COOKIE['user_id']) {
@@ -149,11 +185,11 @@ $totalcomments = getnumofcomments($_GET['id'])
                             </form>
                             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $answer['id'] . '" onsubmit="return confirmDelete();">
                                 <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
-                                <button type="submit" name="delete_question" class="btn btn-danger">Delete</button>
+                                <button type="submit" name="delete_answer" class="btn btn-danger">Delete</button>
                             </form>
             </div>';
         }
-        echo '</div></div><hr>';
+        echo '</div></div></div><hr>';
         foreach ($comments as $comment) {
             echo '<div class="container"><div class = "card text-center">
             <div class = "card-header">
@@ -193,6 +229,10 @@ $totalcomments = getnumofcomments($_GET['id'])
                 </li>
             </ul>
         </nav>
-
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this answer?");
+            }
+        </script>
     </body>
 </html>

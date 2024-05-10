@@ -32,6 +32,42 @@ function getQuestionById($questionId) {
     return $question;
 }
 
+function deleteQuestion($question_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM question WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $question_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_question'])) {
+    $question_id = $_POST['question_id'];
+    if (deleteQuestion($question_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+
 // Check if the question ID is provided in the URL
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $questionId = $_GET['id'];
