@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-$active="answer page";
+$active = "answer page";
 require_once 'necessary/dbcon.php';
 
 function getnumofcomments($answerid) {
@@ -136,12 +136,24 @@ $totalcomments = getnumofcomments($_GET['id'])
             </div>
             <div class = "card-footer text-body-light"><span>
             ' . $answer['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $answer['name'] . '</span>
-            </div>
-            </div>
-            </div><hr>'
-            ;
+            </div>';
+
             //close the div
+        } if (isset($_COOKIE['user_id']) && $answer['userid'] === $_COOKIE['user_id']) {
+            echo '<div class="btn-group">
+                            <form method="post" action="edit_answer.php">
+                    <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
+                        <input type="hidden" name="answer_title" value="' . $answer['title'] . '">
+                            <input type="hidden" name="answer_content" value="' . $answer['content'] . '">
+                                <button type="submit" name="edit_answer" class="btn btn-warning">Edit</button> 
+                            </form>
+                            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $answer['id'] . '" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
+                                <button type="submit" name="delete_question" class="btn btn-danger">Delete</button>
+                            </form>
+            </div>';
         }
+        echo '</div></div><hr>';
         foreach ($comments as $comment) {
             echo '<div class="container"><div class = "card text-center">
             <div class = "card-header">

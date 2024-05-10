@@ -142,11 +142,13 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                             </form>
             </div>';
             }
-            // "Answer this question" button with orange color using inline CSS
-            echo '<form method="get" action="create_answer.php">
+            if (isLoggedIn()) {
+                // "Answer this question" button with orange color using inline CSS
+                echo '<form method="get" action="create_answer.php">
               <input type="hidden" name="id" value="' . $question['id'] . '">
-              <button type="submit" class="btn btn-primary" style="background-color: orange; border-color: orange;">Answer this question</button>
-              </form>';
+              <button type="submit" class="btn btn-primary" style="background-color: orange; border-color: orange; margin-top:3px;">Answer this question</button>
+            </form>';
+            }
 
             echo '</div></div></div><hr>';
         }
