@@ -4,6 +4,42 @@ $active = 'home';
 require_once 'necessary/dbcon.php';
 require_once 'necessary/operation.php'; // Include operation.php to resolve the error
 
+function deleteanswer($answer_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM answer WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $answer_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_answer'])) {
+    $answer_id = $_POST['answer_id'];
+    if (deleteanswer($answer_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+
 // Function to retrieve a specific question by its ID
 function getQuestionById($questionId) {
     $conn = dbcon();
@@ -201,9 +237,30 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                     </div>
                     <div class="card-footer text-body-light"><span>
                     ' . $answer['answertime'] . '  </span><span style="background-color:rgb(240, 240, 240);">  Posted by : ' . $answer['name'] . '</span>';
-                    echo '<div class="average-rate">Average Rate: ' . $averageRate . '</div>';
+            echo '<div class="average-rate">Average Rate: ' . $averageRate . '</div>';
+
+            if (isset($_COOKIE['user_id']) && $answer['userid'] === $_COOKIE['user_id']) {
+                echo '<div class="btn-group">
+                            <form method="post" action="edit_answer.php">
+                    <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
+                        <input type="hidden" name="answer_title" value="' . $answer['title'] . '">
+                            <input type="hidden" name="answer_content" value="' . $answer['content'] . '">
+                                <button type="submit" name="edit_answer" class="btn btn-warning">Edit</button> 
+                            </form>
+                            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $answer['id'] . '" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
+                                <button type="submit" name="delete_answer" class="btn btn-danger">Delete</button>
+                            </form>
+            </div>';
+            }
+
+
+
+
+
             if (isset($_COOKIE['user_id'])) {
-                echo '</div>
+                echo '
+                    </div>
                     <div class="rate" id="rate-' . $answer['id'] . '">
                        <input type="radio" id="star5-' . $answer['id'] . '" name="rate-' . $answer['id'] . '" value="5" onclick="submitRating(' . $answer['id'] . ', ' . $_GET['id'] . ', ' . $_COOKIE['user_id'] . ')" />
                        <label for="star5-' . $answer['id'] . '" title="text">5 stars</label>

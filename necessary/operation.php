@@ -91,7 +91,7 @@ function getthequestion($question_id) {
 function getthequestionanswers($question_id) {
     $db = dbcon();
 
-    $sql = "SELECT answer.title,answer.content,answer.time AS answertime,stack_user.name,answer.id "
+    $sql = "SELECT answer.userid,answer.title,answer.content,answer.time AS answertime,stack_user.name,answer.id "
             . "FROM question,answer,stack_user WHERE question.id=answer.questionid AND answer.userid=stack_user.id AND question.id=" . $question_id . ";  ";
 
     $result = mysqli_query($db, $sql);
@@ -134,6 +134,7 @@ function findmyanswer($search, $userid) {
     }
     return $assocq;
 }
+
 function getAverageRate($answerId) {
     $conn = dbcon();
     if (!$conn) {

@@ -4,7 +4,7 @@ session_start();
 $active = "answer page";
 require_once 'necessary/dbcon.php';
 
-function deleteQuestion($answer_id) {
+function deleteanswer($answer_id) {
     $conn = dbcon();
     if (!$conn) {
         return false; // Return false if connection fails
@@ -30,7 +30,7 @@ function deleteQuestion($answer_id) {
 // Handle delete request if the delete button is clicked
 if (isset($_POST['delete_answer'])) {
     $answer_id = $_POST['answer_id'];
-    if (deleteQuestion($answer_id)) {
+    if (deleteanswer($answer_id)) {
         // If deletion is successful, redirect back to the same page
         header("Location: index.php");
         exit();
