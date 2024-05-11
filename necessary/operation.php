@@ -134,3 +134,30 @@ function findmyanswer($search, $userid) {
     }
     return $assocq;
 }
+function getAverageRate($answerId) {
+    $conn = dbcon();
+    if (!$conn) {
+        return null; // Return null if connection fails
+    }
+
+    // Prepare SQL query to calculate the average rate
+    $stmt = $conn->prepare("SELECT AVG(rate) AS average_rate FROM rate WHERE answerid = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return null; // Return null if query preparation fails
+    }
+
+    $stmt->bind_param("i", $answerId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch the average rate
+    $row = $result->fetch_assoc();
+    $averageRate = $row['average_rate'];
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $averageRate;
+}

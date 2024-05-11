@@ -189,6 +189,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
             echo '</div></div></div><hr>';
         }
         foreach (getthequestionanswers($_GET['id']) as $answer) {
+            $averageRate = getAverageRate($answer['id']);
             echo '<div class="container"><div class="card text-center">
                     <div class="card-header">
                     Answer
@@ -200,6 +201,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                     </div>
                     <div class="card-footer text-body-light"><span>
                     ' . $answer['answertime'] . '  </span><span style="background-color:rgb(240, 240, 240);">  Posted by : ' . $answer['name'] . '</span>';
+                    echo '<div class="average-rate">Average Rate: ' . $averageRate . '</div>';
             if (isset($_COOKIE['user_id'])) {
                 echo '</div>
                     <div class="rate" id="rate-' . $answer['id'] . '">
