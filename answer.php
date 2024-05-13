@@ -3,6 +3,7 @@
 session_start();
 $active = "answer page";
 require_once 'necessary/dbcon.php';
+require_once 'User.php';
 
 function deleteanswer($answer_id) {
     $conn = dbcon();
@@ -31,6 +32,42 @@ function deleteanswer($answer_id) {
 if (isset($_POST['delete_answer'])) {
     $answer_id = $_POST['answer_id'];
     if (deleteanswer($answer_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+
+function deletecomment($comment_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM comment_answer WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $comment_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_comment'])) {
+    $comment_id = $_POST['comment_id'];
+    if (deletecomment($comment_id)) {
         // If deletion is successful, redirect back to the same page
         header("Location: index.php");
         exit();
@@ -177,7 +214,7 @@ $totalcomments = getnumofcomments($_GET['id'])
             //close the div
         } if (isset($_COOKIE['user_id']) && $answer['userid'] === $_COOKIE['user_id']) {
             echo '<div class="btn-group">
-                            <form method="post" action="edit_answer.php">
+                            <form method="post" action="edit_answer.php?' . $answer['id'] . '">
                     <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
                         <input type="hidden" name="answer_title" value="' . $answer['title'] . '">
                             <input type="hidden" name="answer_content" value="' . $answer['content'] . '">
@@ -187,7 +224,10 @@ $totalcomments = getnumofcomments($_GET['id'])
                                 <input type="hidden" name="answer_id" value="' . $answer['id'] . '">
                                 <button type="submit" name="delete_answer" class="btn btn-danger">Delete</button>
                             </form>
-            </div>';
+            </div><br>';
+        }
+        if (isLoggedIn()) {
+            echo '<a class="btn btn-success m-2" href="create_comment.php?id=' . $answer['id'] . '">add comment to an answer</a>';
         }
         echo '</div></div></div><hr>';
         foreach ($comments as $comment) {
@@ -201,10 +241,25 @@ $totalcomments = getnumofcomments($_GET['id'])
             
             </div>
             <div class = "card-footer text-body-light"><span>
-            ' . $comment['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $comment['name'] . '</span>
-            </div>
-            </div>
-            </div><hr>';
+            ' . $comment['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $comment['name'] . '</span><br>
+            
+            
+            ';
+            if (isset($_COOKIE['user_id']) && $comment['userid'] === $_COOKIE['user_id']) {
+                echo '<div class="btn-group">
+                            <form method="post" action="edit_comment.php?id=' . $comment['id'] . '">
+                                <input type="hidden" name="answer_id" value="' . $_GET['id'] . '">
+                    <input type="hidden" name="comment_id" value="' . $comment['id'] . '">
+                            <input type="hidden" name="comment_content" value="' . $comment['content'] . '">
+                                <button type="submit" name="edit_comment" class="btn btn-warning">Edit</button> 
+                            </form>
+                            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $comment['id'] . '" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="comment_id" value="' . $comment['id'] . '">
+                                <button type="submit" name="delete_comment" class="btn btn-danger">Delete</button>
+                            </form>
+            </div><br>';
+            }
+            echo '</div></div></div><hr>';
         }
         ?>
         <nav aria-label="Page navigation example">
