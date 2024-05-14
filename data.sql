@@ -25,7 +25,7 @@ INSERT INTO `answer` (`id`, `userid`, `questionid`, `title`, `content`, `time`) 
 	('937597', '5192', '92759', 'here', 'here', '2024-05-11 15:29:17');
 /*!40000 ALTER TABLE `answer` ENABLE KEYS */;
 
--- Dumping data for table stack_overflow.comment_answer: ~0 rows (approximately)
+-- Dumping data for table stack_overflow.comment_answer: ~3 rows (approximately)
 /*!40000 ALTER TABLE `comment_answer` DISABLE KEYS */;
 INSERT INTO `comment_answer` (`id`, `userid`, `questionid`, `answerid`, `content`, `time`) VALUES
 	('21199751', '6125', NULL, NULL, 'nmkjxcoiqwnfcoiqwndio3diq32dion', '2024-05-13 21:26:40'),
@@ -33,7 +33,7 @@ INSERT INTO `comment_answer` (`id`, `userid`, `questionid`, `answerid`, `content
 	('39517571', '6125', NULL, '419162', 'mk;m;kmklkm klmklmklmopsmcmsmlks', '2024-05-13 21:28:28');
 /*!40000 ALTER TABLE `comment_answer` ENABLE KEYS */;
 
--- Dumping data for table stack_overflow.question: ~12 rows (approximately)
+-- Dumping data for table stack_overflow.question: ~21 rows (approximately)
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
 INSERT INTO `question` (`id`, `userid`, `title`, `content`, `time`) VALUES
 	('10840', '2737', 'how i can setup linux on my device ', 'i want to setup ubuntu linux can anyone tell me ', '2024-05-07 14:31:17'),
@@ -70,7 +70,7 @@ INSERT INTO `rate` (`id`, `userid`, `questionid`, `answerid`, `rate`) VALUES
 	('8996607', '9851', '17567', '936724', 5);
 /*!40000 ALTER TABLE `rate` ENABLE KEYS */;
 
--- Dumping data for table stack_overflow.stack_user: ~15 rows (approximately)
+-- Dumping data for table stack_overflow.stack_user: ~21 rows (approximately)
 /*!40000 ALTER TABLE `stack_user` DISABLE KEYS */;
 INSERT INTO `stack_user` (`id`, `name`, `email`, `PASSWORD`, `TYPE`) VALUES
 	('1364', 'saeed', 'saeed@gmail.com', '$2y$10$.3FH2OFrvoG8.BMM.U9c9Of0PyJj15J4I2HC3hil80.mm/Y8T97gu', NULL),

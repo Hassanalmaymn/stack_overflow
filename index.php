@@ -179,7 +179,7 @@ $questions = getQuestions($offset, $limit);
                     ?>
 
                 </div>
-<?php endforeach; //fix pagination bug      ?>
+<?php endforeach;     ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <!-- Previous page button -->

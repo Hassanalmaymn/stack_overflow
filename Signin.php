@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container" id="signIn">
-        <a href="index.php"><img src="SignLogo.jpg" alt="Logo" width="250" height="70" style="margin-left: 80px;"></a>
+        <a href="index.php"><img src="icon.PNG" alt="Logo" width="250" height="70" style="margin-left: 80px;"></a>
 
         <h1 class="form-title">Sign In</h1>
         <?php if (isset($error_message)){ echo "<div class='alert alert-danger d-flex gap-2'><i class='bi bi-info-circle-fill'></i><p class='m-0'>". $error_message . '</p></div>';} ?>
@@ -46,8 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
         <br>
         <div class="links">
-          <p>Don't have an account yet?</p>
-          <button onclick="window.location.href = 'Signup.php';">Sign Up</button>
+          
+          <p>Don't have an account yet? <button onclick="window.location.href = 'Signup.php';">Sign Up</button></p>
         </div>
     </div>
 </body>

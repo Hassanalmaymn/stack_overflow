@@ -1,7 +1,51 @@
 <?php
 session_start();
 $active = 'home';
-$word = $_GET['search']
+$word = $_GET['search'];
+
+require_once 'necessary/dbcon.php';
+
+function getTotalQuestions($word) {
+    $conn = dbcon();
+    if (!$conn) {
+        return 0; // Return 0 if connection fails
+    }
+
+    // Prepare SQL query to count the total number of questions for the user
+    $stmt = "SELECT COUNT(*) as total FROM question WHERE question.id IN 
+ (SELECT question.id FROM question WHERE question.title LIKE '%" . $word . "%' OR  question.content LIKE '%" . $word . "%');";
+
+    $result = mysqli_query($conn, $stmt);
+
+    $row = mysqli_fetch_array($result);
+
+    return $row['total'];
+}
+
+function findn($word, $offset, $limit) {
+    $db = dbcon();
+
+    $sql = "SELECT question.id AS qid,question.title,question.content,stack_user.name,question.time, COUNT(answer.id)
+ AS numberofanswers FROM ((stack_user join question ON stack_user.id=question.userid) LEFT JOIN answer ON answer.questionid=question.id) 
+ WHERE question.id IN 
+ (SELECT question.id FROM question WHERE question.title LIKE '%" . $word . "%' OR  question.content LIKE '%" . $word . "%') GROUP BY
+  question.id ORDER by numberofanswers DESC limit " . $offset . "," . $limit . " ;";
+
+    $result = mysqli_query($db, $sql);
+    $assocq = array();
+    while ($row = mysqli_fetch_array($result)) {
+
+        $assocq[] = $row;
+    }
+    return $assocq;
+}
+
+$total_questions = getTotalQuestions($word);
+$page = isset($_GET['page']) ? $_GET['page'] : 1; // Current page number
+$limit = 10; // Number of questions per page
+$offset = ($page - 1) * $limit; // Offset for SQL query
+// Retrieve user's questions
+$questions = findn($word, $offset, $limit);
 ?>
 
 
@@ -38,7 +82,7 @@ $word = $_GET['search']
             require_once 'User.php';
             require_once 'necessary/operation.php';
             if (!isLoggedIn()) {
-                foreach (find($_GET['search']) as $question) {
+                foreach ($questions as $question) {
 
 
                     /* echo '<div class="card bg-light-emphasis"><a class="card-title" style="text-decoration:none; '
@@ -134,6 +178,28 @@ $word = $_GET['search']
             ?>
 
         </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <!-- Previous page button -->
+                <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page - 1; ?>&search=<?php echo $_GET['search']; ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <!-- Page numbers -->
+                <?php for ($i = 1; $i <= ceil($total_questions / $limit); $i++): ?>
+                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo $_GET['search']; ?>"><?php echo $i; ?></a></li>
+                <?php endfor; ?>
+                <!-- Next page button -->
+                <li class="page-item <?php echo ($page >= ceil($total_questions / $limit)) ? 'disabled' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $page + 1; ?>&search=<?php echo $_GET['search']; ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
         <script  src="scripts/bootstrap.bundle.min.js"></script>
         <script>
