@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <title>Create Question</title>
         <!-- Bootstrap CSS -->
 
-        <link rel="icon" href="icon.png">
+        <link rel="icon" href="icon2.png">
         <link rel="stylesheet" href="styles/bootstrap.min.css">    
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>

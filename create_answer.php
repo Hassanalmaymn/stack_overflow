@@ -92,6 +92,7 @@ if(isset($_GET['id'])) {
             <meta charset="UTF-8">
             <title>Answer Question</title>
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <link rel="icon" href="icon2.png">
             <style>
                 body {
                     font-family: Arial, sans-serif;

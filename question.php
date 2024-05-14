@@ -127,7 +127,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     <head>
         <meta charset="UTF-8">
         <title>stack overflow</title>
-        <link rel="icon" href="icon.png">
+        <link rel="icon" href="icon2.png">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="styles/bootstrap.min.css">   
         <style>

@@ -1,8 +1,8 @@
 
-<nav class="navbar navbar-expand-md bg-warning">
+<nav class="navbar navbar-expand-md bg-dark">
 
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php"><img src="icon.png" width="35px" height="35px" ></img> stack overflow</a>
+        <a class="navbar-brand" href="index.php"><img src="icon.PNG" width="157.5px" height="52.5px" ></img></a>
         <button class="navbar-toggler"
                 type="button" 
                 data-bs-toggle="collapse" 
@@ -19,7 +19,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <form class="d-flex justify-content-center" method="GET" action="search.php" role="search">
                     <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary"  type="submit">Search</button>
+                    <button class="btn btn-outline-light"  type="submit">Search</button>
                 </form>
             </ul>
 
@@ -31,9 +31,9 @@
         require_once'User.php';
 
         if (!isLoggedIn()) {
-            echo'<a class="btn btn-outline-dark justify-content-end m-2" href="display10most.php">display questions has most answers</a>
-                <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signin.php">sign in</a>
-            <a class="btn btn-outline-dark justify-content-end m-2" aria-current="page" href="signup.php">sign up</a>';
+            echo'<a class="btn btn-outline-light justify-content-end m-2" href="display10most.php">display questions has most answers</a>
+                <a class="btn btn-outline-light justify-content-end m-2" aria-current="page" href="signin.php">sign in</a>
+            <a class="btn btn-outline-light justify-content-end m-2" aria-current="page" href="signup.php">sign up</a>';
         }
         if (isLoggedIn()) {
             $home = $active === 'home' ? 'active' : '';
@@ -42,18 +42,18 @@
             echo '
                 <ul class="navbar-nav">
                     <li class="nav-item ' . $home . '">
-                        <a class="btn btn-outline-dark m-2" href="index.php">Home</a>
+                        <a class="btn btn-outline-light m-2" href="index.php">Home</a>
                     </li>
                     <li class="nav-item ' . $my_questions . '">
-                        <a class="btn btn-outline-dark m-2" href="userquestions.php">My Questions</a>
+                        <a class="btn btn-outline-light m-2" href="userquestions.php">My Questions</a>
                     </li>
                     <li class="nav-item ' . $my_answers . '">
-                        <a class="btn btn-outline-dark m-2" href="useranswers.php">My Answers</a>
+                        <a class="btn btn-outline-light m-2" href="useranswers.php">My Answers</a>
                     </li>
         </ul>
         
         
-                    <a class="btn btn-outline-dark justify-content-end m-2" href="signout.php">sign out</a>';
+                    <a class="btn btn-outline-light justify-content-end m-2" href="signout.php">sign out</a>';
         }
         ?>
     </div>

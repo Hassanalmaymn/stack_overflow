@@ -89,6 +89,7 @@ if (isset($_GET['id'])) {
             <head>
                 <meta charset="UTF-8">
                 <title>comment</title>
+                <link rel="icon" href="icon2.png">
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
                 <style>
                     body {

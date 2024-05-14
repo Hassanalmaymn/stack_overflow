@@ -13,7 +13,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHPWebPage.php to 
     <head>
         <meta charset="UTF-8">
         <title>sign out</title>
-         <link rel="icon" href="icon.png">
+         <link rel="icon" href="icon2.png">
         <link rel="stylesheet" href="styles/bootstrap.min.css">  
         
     </head>
