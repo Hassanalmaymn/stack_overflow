@@ -233,7 +233,7 @@ $totalcomments = getnumofcomments($_GET['id'])
         foreach ($comments as $comment) {
             echo '<div class="container"><div class = "card text-center">
             <div class = "card-header">
-            comment
+            comment for answer
             </div>
             <div class = "card-body">
             

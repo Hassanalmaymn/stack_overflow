@@ -39,6 +39,75 @@ if (isset($_POST['delete_answer'])) {
         echo "Failed to delete the question.";
     }
 }
+function deletecomment($comment_id) {
+    $conn = dbcon();
+    if (!$conn) {
+        return false; // Return false if connection fails
+    }
+
+    // Prepare SQL query to delete the question
+    $stmt = $conn->prepare("DELETE FROM comment_answer WHERE id = ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return false; // Return false if query preparation fails
+    }
+
+    $stmt->bind_param("i", $comment_id);
+    $result = $stmt->execute();
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $result;
+}
+
+// Handle delete request if the delete button is clicked
+if (isset($_POST['delete_comment'])) {
+    $comment_id = $_POST['comment_id'];
+    if (deletecomment($comment_id)) {
+        // If deletion is successful, redirect back to the same page
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle deletion failure
+        echo "Failed to delete the question.";
+    }
+}
+function getQuestioncomments($questionid) {
+    $conn = dbcon();
+    if (!$conn) {
+        return array(); // Return an empty array if connection fails
+    }
+
+    // Prepare SQL query to fetch user's questions with pagination
+    $stmt = $conn->prepare("SELECT comment_answer.*,stack_user.name  FROM comment_answer,stack_user
+             where stack_user.id=comment_answer.userid AND questionid= ?");
+    if (!$stmt) {
+        echo "Error: " . $conn->error;
+        return array(); // Return an empty array if query preparation fails
+    }
+
+    $stmt->bind_param("i", $questionid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch questions and return them as an array
+    $questions = array();
+    while ($row = $result->fetch_assoc()) {
+        $questions[] = $row;
+    }
+
+    // Close statement and database connection
+    $stmt->close();
+    $conn->close();
+
+    return $questions;
+}
+
+
+
+
 
 // Function to retrieve a specific question by its ID
 function getQuestionById($questionId) {
@@ -120,6 +189,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 } else {
     echo "Question ID is not provided.";
 }
+
+$comments = getQuestioncomments($_GET['id']);
 ?>
 
 <!DOCTYPE html>
@@ -220,6 +291,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
               <input type="hidden" name="id" value="' . $question['id'] . '">
               <button type="submit" class="btn btn-primary" style="background-color: orange; border-color: orange; margin-top:3px;">Answer this question</button>
             </form>';
+            echo '<a class="btn btn-success m-2" href="create_comment_forQuestion.php?id=' . $question['id'] . '">add comment to a question</a>';
             }
 
             echo '</div></div></div><hr>';
@@ -279,6 +351,43 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                     
                     </div><hr>';
         }
+
+        foreach ($comments as $comment) {
+            echo '<div class="container"><div class = "card text-center">
+            <div class = "card-header">
+            comment for question
+            </div>
+            <div class = "card-body">
+            
+            <p class = "card-text">' . $comment['content'] . '</p>
+            
+            </div>
+            <div class = "card-footer text-body-light"><span>
+            ' . $comment['time'] . '  </span><br><span style="backgound-color:gray;">  Posted by : ' . $comment['name'] . '</span><br>
+            
+            
+            ';
+            if (isset($_COOKIE['user_id']) && $comment['userid'] === $_COOKIE['user_id']) {
+                echo '<div class="btn-group">
+                            <form method="post" action="edit_comment.php?id=' . $comment['id'] . '">
+                                <input type="hidden" name="answer_id" value="' . $_GET['id'] . '">
+                    <input type="hidden" name="comment_id" value="' . $comment['id'] . '">
+                            <input type="hidden" name="comment_content" value="' . $comment['content'] . '">
+                                <button type="submit" name="edit_comment" class="btn btn-warning">Edit</button> 
+                            </form>
+                            <form method="post" action="' . $_SERVER['PHP_SELF'] . '?id=' . $comment['id'] . '" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="comment_id" value="' . $comment['id'] . '">
+                                <button type="submit" name="delete_comment" class="btn btn-danger">Delete</button>
+                            </form>
+            </div><br>';
+            }
+            echo '</div></div></div><hr>';
+        }
+
+
+
+
+
         ?>
 
 
