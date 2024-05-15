@@ -123,6 +123,7 @@ $questions = getQuestions($offset, $limit);
         <link rel="icon" href="icon2.png">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="styles/bootstrap.min.css">   
+        <link rel="stylesheet" href="styles/bgcolor.css">   
         <style>
             .question-box {
                 border: 1px solid #ccc;
@@ -133,78 +134,79 @@ $questions = getQuestions($offset, $limit);
                 margin-right: 5px; /* Adjust margin between buttons */
             }
             .button {
-  position: relative;
-  width: 150px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border: 1px solid #34974d;
-  background-color: #3aa856;
+                position: relative;
+                width: 150px;
+                height: 40px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                border: 1px solid #34974d;
+                background-color: #3aa856;
 
-}
+            }
 
-.button, .button__icon, .button__text {
-  transition: all 0.3s;
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit text color */
-}
+            .button, .button__icon, .button__text {
+                transition: all 0.3s;
+                text-decoration: none; /* Remove underline */
+                color: inherit; /* Inherit text color */
+            }
 
-.button .button__text {
-  transform: translateX(30px);
-  color: #fff;
-  font-weight: 600;
-  padding-left: -60px; /* Adjusted padding */
-}
+            .button .button__text {
+                transform: translateX(30px);
+                color: #fff;
+                font-weight: 600;
+                padding-left: -60px; /* Adjusted padding */
+            }
 
-.button .button__icon {
-  position: absolute;
-  transform: translateX(135px);
-  height: 40px;
-  width: 39px;
-  background-color: #34974d;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+            .button .button__icon {
+                position: absolute;
+                transform: translateX(135px);
+                height: 40px;
+                width: 39px;
+                background-color: #34974d;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
 
-.button .svg {
-  width: 30px;
-  stroke: #fff;
-  
-}
+            .button .svg {
+                width: 30px;
+                stroke: #fff;
 
-.button:hover {
-  background: #34974d;
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit text color */
-}
+            }
 
-.button:hover .button__text {
-  color: transparent;
-}
+            .button:hover {
+                background: #34974d;
+                text-decoration: none; /* Remove underline */
+                color: inherit; /* Inherit text color */
+            }
 
-.button:hover .button__icon {
-  width: 148px;
-  transform: translateX(0);
-}
+            .button:hover .button__text {
+                color: transparent;
+            }
 
-.button:active .button__icon {
-  background-color: #2e8644;
-}
+            .button:hover .button__icon {
+                width: 148px;
+                transform: translateX(0);
+            }
 
-.button:active {
-  border: 1px solid #2e8644;
-}
-.button a {
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Inherit text color */
-}
+            .button:active .button__icon {
+                background-color: #2e8644;
+            }
+
+            .button:active {
+                border: 1px solid #2e8644;
+            }
+            .button a {
+                text-decoration: none; /* Remove underline */
+                color: inherit; /* Inherit text color */
+            }
         </style>
-    </head>
-    <body>
 
-<?php require_once 'necessary/stack_navbar.php'; ?>
+    </head>
+    <body class="bg-stack">
+
+        <?php require_once 'necessary/stack_navbar.php'; ?>
         <hr>
         <div class="container">
             <?php
@@ -227,7 +229,7 @@ $questions = getQuestions($offset, $limit);
               }
               ?> */
             ?>
-<?php foreach ($questions as $question): ?>
+            <?php foreach ($questions as $question): ?>
                 <div class="question-box">
                     <h4><a style='text-decoration: none;' href='question.php?id=<?php echo $question['id']; ?>'><?php echo $question['title']; ?></a></h4>
                     <p><?php echo $question['content']; ?></p>
@@ -250,7 +252,7 @@ $questions = getQuestions($offset, $limit);
                     ?>
 
                 </div>
-<?php endforeach;     ?>
+            <?php endforeach; ?>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <!-- Previous page button -->
@@ -263,7 +265,7 @@ $questions = getQuestions($offset, $limit);
                     <!-- Page numbers -->
                     <?php for ($i = 1; $i <= ceil($total_questions / $limit); $i++): ?>
                         <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-<?php endfor; ?>
+                    <?php endfor; ?>
                     <!-- Next page button -->
                     <li class="page-item <?php echo ($page >= ceil($total_questions / $limit)) ? 'disabled' : ''; ?>">
                         <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
