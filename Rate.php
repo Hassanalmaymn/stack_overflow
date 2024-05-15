@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once 'necessary/dbcon.php';
 
 // Function to insert/update rating in the database

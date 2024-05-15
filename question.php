@@ -414,22 +414,63 @@ $comments = getQuestioncomments($_GET['id']);
                 xhr.send('answer_id=' + encodeURIComponent(answerId) + '&questionid=' + encodeURIComponent(questionId) + '&user_id=' + encodeURIComponent(userId) + '&rating=' + encodeURIComponent(rating));
             }
 
-// Function to initialize ratings from localStorage
             function initializeRatings() {
-                // Loop through each answer
-                document.querySelectorAll('.rate').forEach(function (rateElement) {
-                    var answerId = rateElement.id.split('-')[1]; // Extract answer ID from rate ID
-                    var storedRating = localStorage.getItem('rating_' + answerId); // Get stored rating
+    // Check if user ID is present in cookies
+    var userId = getCookie('user_id');
+    if (userId !== "") {
+        // Loop through each answer
+        document.querySelectorAll('.rate').forEach(function (rateElement) {
+            var answerId = rateElement.id.split('-')[1]; // Extract answer ID from rate ID
 
-                    // If a rating is found in localStorage, set the corresponding radio button as checked
-                    if (storedRating !== null) {
-                        rateElement.querySelector('input[value="' + storedRating + '"]').checked = true;
+            // AJAX request to fetch user's rating for the current answer
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'FetchRating.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var rating = xhr.responseText;
+                    if (rating !== "") {
+                        // Set the corresponding radio button as checked based on the retrieved rating
+                        rateElement.querySelector('input[value="' + rating + '"]').checked = true;
                     }
-                });
-            }
+                }
+            };
+            xhr.send('answer_id=' + encodeURIComponent(answerId) + '&user_id=' + encodeURIComponent(userId));
+        });
+    }
+}
 
-// Call initializeRatings() when the document is ready to set ratings from localStorage
-            document.addEventListener('DOMContentLoaded', initializeRatings);
+// Function to set a cookie
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1, cookie.length);
+        }
+        if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length, cookie.length);
+        }
+    }
+    return null;
+}
+
+// Call initializeRatings() when the document is ready to set ratings from the server and cookies
+document.addEventListener('DOMContentLoaded', function () {
+    initializeRatings();
+});
 
 // Call initializeRatings() when the page loads to set ratings from localStorage
             window.onload = initializeRatings;
