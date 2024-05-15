@@ -129,6 +129,7 @@ $questions = getQuestions($offset, $limit);
                 border: 1px solid #ccc;
                 padding: 10px;
                 margin-bottom: 10px;
+                background-color:white;
             }
             .btn-group button {
                 margin-right: 5px; /* Adjust margin between buttons */
