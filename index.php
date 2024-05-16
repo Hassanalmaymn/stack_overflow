@@ -205,6 +205,61 @@ $questions = getQuestions($offset, $limit);
                 text-decoration: none; /* Remove underline */
                 color: inherit; /* Inherit text color */
             }
+            .list {
+  width: 380px; /* Adjust width dynamically based on content */
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.5s ease-in-out;
+  margin-bottom: 5px; /* Add margin to the bottom */
+  text-decoration: none; /* Remove underline */
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background: DodgerBlue;
+  color: #f5f5f5;
+  overflow: hidden; /* Ensure text doesn't overflow */
+  position: relative; /* Position relative for absolute positioning inside */
+}
+
+.list:hover {
+  box-shadow: 0 0 20px 0px #2e2e2e3a;
+  text-decoration: none; /* Remove underline */
+}
+
+.list .icon {
+  position: absolute;
+  height: 40px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+}
+
+.list .text {
+  transform: translateX(55px);
+  white-space: nowrap; /* Ensure text doesn't wrap */
+  overflow: hidden; /* Ensure text doesn't overflow */
+  text-overflow: ellipsis; /* Show ellipsis if text overflows */
+}
+
+.list:hover .icon {
+  width: 175px;
+}
+
+.list:hover .text {
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.list:focus {
+  outline: none;
+}
+
+.list:active .icon {
+  transform: scale(0.85);
+}
         </style>
 
     </head>
@@ -222,6 +277,19 @@ $questions = getQuestions($offset, $limit);
                           <span class="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg"><line y2="19" y1="5" x2="12" x1="12"></line><line y2="12" y1="12" x2="19" x1="5"></line></svg></span>
                       </a><hr>';
             }
+
+            echo '<a href="display10most.php" class="list">
+            <button class="list">
+            <span class="icon">
+                <svg viewBox="0 0 175 80" width="40" height="40">
+                    <rect width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                    <rect y="30" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                    <rect y="60" width="80" height="15" fill="#f0f0f0" rx="10"></rect>
+                </svg>
+            </span>
+            <span class="text">Display Questions With Highest Answers</span>
+        </button>
+      </a>';
 
             /* foreach (get10recentquestion() as $question) {
 
